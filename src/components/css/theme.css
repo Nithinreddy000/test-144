@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+
+/* General styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border-color: #f0f2f5;
+}
+
+/* Login */
+.facebook {
+    font-weight: bold;
+    font-size: 3.5em;
+    font-family: "Poppins", sans-serif;
+    color: #1877f2;
+}
+
+.text-description {
+    font-weight: normal;
+    font-size: 1.4em;
+    font-family: "Poppins", sans-serif;
+}
+
+.bg-gray {
+    background-color: #f0f2f5;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.card {
+    max-width: 400px;
+    margin: auto;
+}
+
+.btn-primary {
+    background-color: #1877f2 !important;
+}
+
+.btn-success {
+    background-color: #42b72a !important;
+}
+
+input::placeholder {
+    color: rgb(190, 186, 186) !important;
+    font-size: 0.8em;
+}
+
+.btn-h-primary:hover {
+    background-color: #096ae8 !important;
+}
+
+.btn-h-success:hover {
+    background-color: #309f1a !important;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .text-description {
+        font-size: 1.2em;
+    }
+
+    .bg-gray {
+        padding: 10px;
+        height: auto;
+    }
+
+    .card {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .text-description {
+        font-size: 1em;
+    }
+
+    .card {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 320px) {
+    .text-description {
+        font-size: 0.8em;
+    }
+
+    .card {
+        padding: 10px;
+    }
+}
