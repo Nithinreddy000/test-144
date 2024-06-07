@@ -12,6 +12,7 @@ import CompanySelection from './components/CompanySelection/CompanySelection';
 import CompanyLogin from './components/CompanyLogin/CompanyLogin';
 import BlankPage from './components/CompanyProfile/CompanyProfile';
 import CompanyDashboard from './components/CompanyDashboard/layouts/dashboard/index';
+import SignOut from "./components/CompanyDashboard/layouts/authentication/sign-out";    
 
 import MDBox from "./components/CompanyDashboard/components/MDBox";
 import Sidenav from "./components/CompanyDashboard/examples/Sidenav";
@@ -25,6 +26,7 @@ import { MaterialUIControllerProvider, useMaterialUIController, setMiniSidenav, 
 
 import brandWhite from "./components/CompanyDashboard/assets/images/logo-ct.png";
 import brandDark from "./components/CompanyDashboard/assets/images/logo-ct-dark.png";
+
 
 function DashboardContent() {
     const [controller, dispatch] = useMaterialUIController();
@@ -173,6 +175,7 @@ function App() {
                 <Route path="/CompanySelection" element={<CompanySelection />} />
                 <Route path="/CompanyLogin" element={<CompanyLogin />} />
                 <Route path="/CompanyProfile" element={<BlankPage />} />
+                <Route path="/authentication/sign-out" element={<SignOut />} />
                 <Route
                     path="*"
                     element={

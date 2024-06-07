@@ -1,19 +1,4 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-// prop-types is a library for typechecking of props
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 // @mui material components
@@ -25,9 +10,15 @@ import Icon from "@mui/material/Icon";
 import MDBox from "../../../../components/MDBox";
 import MDTypography from "../../../../components/MDTypography";
 
-function ComplexStatisticsCard({ color, title, count, percentage, icon }) {
+function ComplexStatisticsCard({ color, title, count, percentage, icon, details }) {
+  const [expanded, setExpanded] = useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
   return (
-    <Card>
+    <Card onClick={handleExpandClick} sx={{ cursor: "pointer" }}>
       <MDBox display="flex" justifyContent="space-between" pt={1} px={2}>
         <MDBox
           variant="gradient"
@@ -66,6 +57,13 @@ function ComplexStatisticsCard({ color, title, count, percentage, icon }) {
           </MDTypography>
           &nbsp;{percentage.label}
         </MDTypography>
+        {expanded && (
+          <MDBox mt={2}>
+            <MDTypography variant="body2" color="textSecondary">
+              {details}
+            </MDTypography>
+          </MDBox>
+        )}
       </MDBox>
     </Card>
   );
@@ -79,6 +77,7 @@ ComplexStatisticsCard.defaultProps = {
     text: "",
     label: "",
   },
+  details: "No additional details available.",
 };
 
 // Typechecking props for the ComplexStatisticsCard
@@ -110,6 +109,7 @@ ComplexStatisticsCard.propTypes = {
     label: PropTypes.string,
   }),
   icon: PropTypes.node.isRequired,
+  details: PropTypes.node, // Change this line to accept nodes (JSX)
 };
 
 export default ComplexStatisticsCard;

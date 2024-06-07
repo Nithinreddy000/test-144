@@ -24,10 +24,13 @@ import MenuItem from "@mui/material/MenuItem";
 // Material Dashboard 2 React components
 import MDBox from "../../../../components/MDBox";
 import MDTypography from "../../../../components/MDTypography";
-import DataTable from "../../../../examples/Tables/DataTable";
+
+// Material Dashboard 2 React examples
+import DataTable from "../../../../examples/Tables/DataTable"; 
 
 // Data
-import data from "../../../../layouts/rtl/components/Projects/data";
+import data from "../../../../layouts/dashboard/components/Projects/data"; 
+
 function Projects() {
   const { columns, rows } = data();
   const [menu, setMenu] = useState(null);
@@ -50,9 +53,9 @@ function Projects() {
       open={Boolean(menu)}
       onClose={closeMenu}
     >
-      <MenuItem onClick={closeMenu}>عمل</MenuItem>
-      <MenuItem onClick={closeMenu}>عمل آخر</MenuItem>
-      <MenuItem onClick={closeMenu}>شيء آخر هنا</MenuItem>
+      <MenuItem onClick={closeMenu}>Action</MenuItem>
+      <MenuItem onClick={closeMenu}>Another action</MenuItem>
+      <MenuItem onClick={closeMenu}>Something else</MenuItem>
     </Menu>
   );
 
@@ -61,7 +64,7 @@ function Projects() {
       <MDBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
         <MDBox>
           <MDTypography variant="h6" gutterBottom>
-            المشاريع
+            Projects
           </MDTypography>
           <MDBox display="flex" alignItems="center" lineHeight={0}>
             <Icon
@@ -74,7 +77,7 @@ function Projects() {
               done
             </Icon>
             <MDTypography variant="button" fontWeight="regular" color="text">
-              &nbsp;<strong>30 انتهى</strong> هذا الشهر
+              &nbsp;<strong>30 done</strong> this month
             </MDTypography>
           </MDBox>
         </MDBox>
