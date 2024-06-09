@@ -26,6 +26,7 @@ import { MaterialUIControllerProvider, useMaterialUIController, setMiniSidenav, 
 
 import brandWhite from "../src/components/assets/favicon.ico";
 import brandDark from "../src/components/assets/favicon.ico";
+import './styles1.css'
 
 
 function DashboardContent() {

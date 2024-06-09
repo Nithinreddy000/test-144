@@ -1,6 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import "./dashboardstyles.css"; // Import the custom CSS here
 import MDBox from "../../components/MDBox";
 import DashboardLayout from "../../examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "../../examples/Navbars/DashboardNavbar";
@@ -12,15 +17,17 @@ import reportsBarChartData from "../../layouts/dashboard/data/reportsBarChartDat
 import reportsLineChartData from "../../layouts/dashboard/data/reportsLineChartData";
 import Projects from "../../layouts/dashboard/components/Projects";
 import OrdersOverview from "../../layouts/dashboard/components/OrdersOverview";
+import EntranceIcon from '@mui/icons-material/ExitToApp';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
+import Orders from "./orders";
 
 function Dashboard() {
   const navigate = useNavigate();
   const { sales, tasks } = reportsLineChartData;
   const [searchQuery, setSearchQuery] = useState("");
+  const swiperRef = useRef(null);
 
-  const handleCardClick = (orderCount) => {
-    navigate("/Sales", { state: { orderCount } });
-  };
+
 
   const handleSearch = (query) => {
     // Debounce the state update with a delay of 300 milliseconds
@@ -33,62 +40,561 @@ function Dashboard() {
     return content.toLowerCase().includes(searchQuery);
   };
 
+
+  const handleCardClick = (route) => {
+    // Navigate to the specified route
+    navigate(route);
+  };
+  
+
   return (
     <DashboardLayout>
       <DashboardNavbar onSearch={handleSearch} />
-      <MDBox py={3}>
-        <Grid container spacing={3}>
-          {filterDivisions("Total Orders") && (
-            <Grid item xs={12} md={6} lg={3}>
-              <MDBox mb={1.5} onClick={() => handleCardClick(42)} style={{ cursor: "pointer" }}>
-                <ComplexStatisticsCard
-                  color="dark"
-                  icon="shopping_cart"
-                  title="Total Orders"
-                  count={42}
-                  percentage={{
-                    color: "success",
-                    amount: "+55%",
-                    label: "than last week",
-                  }}
-                />
-              </MDBox>
-            </Grid>
-          )}
-          {filterDivisions("Orders Dispatched") && (
-            <Grid item xs={12} md={6} lg={3}>
-              <MDBox mb={1.5} onClick={() => handleCardClick(22)} style={{ cursor: "pointer" }}>
-                <ComplexStatisticsCard
-                  icon="local_shipping"
-                  title="Orders Dispatched"
-                  count="22"
-                  percentage={{
-                    color: "success",
-                    amount: "+3%",
-                    label: "than last month",
-                  }}
-                />
-              </MDBox>
-            </Grid>
-          )}
-          {filterDivisions("Under Processing") && (
-            <Grid item xs={12} md={6} lg={3}>
-              <MDBox mb={1.5} onClick={() => handleCardClick(20)} style={{ cursor: "pointer" }}>
-                <ComplexStatisticsCard
-                  color="success"
-                  icon="assignment"
-                  title="Under Processing"
-                  count="20"
-                  percentage={{
-                    color: "success",
-                    amount: "+1%",
-                    label: "than yesterday",
-                  }}
-                />
-              </MDBox>
-            </Grid>
-          )}
-        </Grid>
+      <MDBox py={3} >
+        <h3 style={{paddingLeft: '10px',fontFamily: 'Poppins, sans-serif',paddingTop:'0%' ,marginTop:'0%'}}>INWARD</h3>
+        <div className="swiper-container">
+        <Swiper
+        spaceBetween={16}
+        slidesPerView={4} // Default number of slides per view
+        breakpoints={{
+          0: {
+            slidesPerView: 1, // 1 slide per view for screens from 0 to 900px
+          },
+          768: {
+            slidesPerView: 2,  // 1 slide per view for screens up to 900px
+          },
+          1300: {
+            slidesPerView: 4, // 4 slides per view for screens larger than 1300px
+          },
+          // Add more breakpoints if needed
+        }}
+      
+        modules={[Navigation]}
+        navigation={{ clickable: true }}
+        loop={true} 
+        >
+
+            {filterDivisions("Orders") && (
+              <SwiperSlide>
+                <div className="card-container">
+                  <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} onClick={() => handleCardClick("/orders")} style={{ cursor: "pointer" }}>
+                      <ComplexStatisticsCard
+                        icon="shopping_cart"
+                        title={<h3 style={{ fontSize: '24px' ,fontFamily: 'Poppins, sans-serif'}}>Order</h3>}
+                        percentage={{
+                          amount: (
+                            <div style={{ fontFamily: 'Poppins, sans-serif'}}>
+                           <div style={{ paddingBottom: '1px' }}>
+                              Approval Pending: {42}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Dispatch Pending: {22}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Processing: {20}
+                            </div>
+                          </div>
+                          ), 
+                        }}
+                      />
+                    </MDBox>
+                  </Grid>
+                </div>
+              </SwiperSlide>
+            )}
+            {filterDivisions("Inward Order") && (
+              <SwiperSlide>
+                <div className="card-container">
+                  <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} onClick={() => handleCardClick("/inward_order")} style={{ cursor: "pointer" }}>
+                      <ComplexStatisticsCard
+                        icon="inventory"
+                        title={<h3 style={{ fontSize: '24px', fontFamily: 'Poppins, sans-serif' }}>Inward Order</h3>}
+                        percentage={{
+                          amount: (
+                            <div style={{ fontFamily: 'Poppins, sans-serif'}}>
+                           <div style={{ paddingBottom: '1px' }}>
+                              Approval Pending: {42}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Dispatch Pending: {22}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Processing: {20}
+                            </div>
+                          </div>
+                          ), 
+                        }}
+                      />
+                    </MDBox>
+                  </Grid>
+                </div>
+              </SwiperSlide>
+            )}
+            {filterDivisions("Gate") && (
+              <SwiperSlide>
+                <div className="card-container">
+                  <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} onClick={() => handleCardClick("/gate")} style={{ cursor: "pointer" }}>
+                      <ComplexStatisticsCard
+                       icon={<EntranceIcon/>}
+                        title={<h3 style={{ fontSize: '24px', fontFamily: 'Poppins, sans-serif' }}>Gate</h3>}
+                        percentage={{
+                          amount: (
+                            <div style={{ fontFamily: 'Poppins, sans-serif'}}>
+                           <div style={{ paddingBottom: '1px' }}>
+                              Approval Pending: {42}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Dispatch Pending: {22}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Processing: {20}
+                            </div>
+                          </div>
+                          ), 
+                        }}
+                      />
+                    </MDBox>
+                  </Grid>
+                </div>
+              </SwiperSlide>
+            )}
+            {filterDivisions("Weighment") && (
+              <SwiperSlide>
+                <div className="card-container">
+                  <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} onClick={() => handleCardClick("/weighment")} style={{ cursor: "pointer" }}>
+                      <ComplexStatisticsCard
+                        icon="scale"
+                        title={<h3 style={{ fontSize: '24px', fontFamily: 'Poppins, sans-serif' }}>Weighment</h3>}
+                        percentage={{
+                          amount: (
+                            <div style={{ fontFamily: 'Poppins, sans-serif'}}>
+                           <div style={{ paddingBottom: '1px' }}>
+                              Approval Pending: {42}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Dispatch Pending: {22}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Processing: {20}
+                            </div>
+                          </div>
+                          ), 
+                        }}
+                      />
+                    </MDBox>
+                  </Grid>
+                </div>
+              </SwiperSlide>
+            )}
+            {filterDivisions("GRN") && (
+              <SwiperSlide>
+                <div className="card-container">
+                  <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} onClick={() => handleCardClick("/grn")} style={{ cursor: "pointer" }}>
+                      <ComplexStatisticsCard
+                        icon="assignment"
+                        title={<h3 style={{ fontSize: '24px', fontFamily: 'Poppins, sans-serif' }}>GRN</h3>}
+                        percentage={{
+                          amount: (
+                            <div style={{ fontFamily: 'Poppins, sans-serif'}}>
+                           <div style={{ paddingBottom: '1px' }}>
+                              Approval Pending: {42}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Dispatch Pending: {22}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Processing: {20}
+                            </div>
+                          </div>
+                          ), 
+                        }}
+                      />
+                    </MDBox>
+                  </Grid>
+                </div>
+              </SwiperSlide>
+            )}
+            {filterDivisions("Purchase") && (
+              <SwiperSlide>
+                <div className="card-container">
+                  <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} onClick={() => handleCardClick("/purchase")} style={{ cursor: "pointer" }}>
+                      <ComplexStatisticsCard
+                        icon="shoppingbasket"
+                        title={<h3 style={{ fontSize: '24px', fontFamily: 'Poppins, sans-serif' }}>Purchase</h3>}
+                        percentage={{
+                          amount: (
+                            <div style={{ fontFamily: 'Poppins, sans-serif'}}>
+                           <div style={{ paddingBottom: '1px' }}>
+                              Approval Pending: {42}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Dispatch Pending: {22}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Processing: {20}
+                            </div>
+                          </div>
+                          ), 
+                        }}
+                      />
+                    </MDBox>
+                  </Grid>
+                </div>
+              </SwiperSlide>
+            )}
+            {filterDivisions("Transporting") && (
+              <SwiperSlide>
+                <div className="card-container">
+                  <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} onClick={() => handleCardClick("/transporting")} style={{ cursor: "pointer" }}>
+                      <ComplexStatisticsCard
+                        icon="local_shipping"
+                        title={<h3 style={{ fontSize: '24px', fontFamily: 'Poppins, sans-serif' }}>Transporting</h3>}
+                        percentage={{
+                          amount: (
+                            <div style={{ fontFamily: 'Poppins, sans-serif'}}>
+                           <div style={{ paddingBottom: '1px' }}>
+                              Approval Pending: {42}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Dispatch Pending: {22}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Processing: {20}
+                            </div>
+                          </div>
+                          ), 
+                        }}
+                      />
+                    </MDBox>
+                  </Grid>
+                </div>
+              </SwiperSlide>
+            )}
+            {filterDivisions("Pending Vehicles") && (
+              <SwiperSlide>
+                <div className="card-container">
+                  <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} onClick={() => handleCardClick("/pending")} style={{ cursor: "pointer" }}>
+                      <ComplexStatisticsCard
+                        icon={<HourglassEmptyIcon/>}
+                        title={<h3 style={{ fontSize: '20px', fontFamily: 'Poppins, sans-serif' }}>Pending Vehicles</h3>}
+                        percentage={{
+                          amount: (
+                            <div style={{ fontFamily: 'Poppins, sans-serif'}}>
+                           <div style={{ paddingBottom: '1px' }}>
+                              Approval Pending: {42}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Dispatch Pending: {22}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Processing: {20}
+                            </div>
+                          </div>
+                          ), 
+                        }}
+                      />
+                    </MDBox>
+                  </Grid>
+                </div>
+              </SwiperSlide>
+            )}
+          </Swiper>
+        </div>
+        <h3 style={{ paddingLeft: '10px',fontFamily: 'Poppins, sans-serif' }}>OUTWARD</h3>
+        <div className="swiper-container">
+        <Swiper
+        spaceBetween={16}
+        slidesPerView={4} // Default number of slides per view
+        breakpoints={{
+          0: {
+            slidesPerView: 1, // 1 slide per view for screens from 0 to 900px
+          },
+          768: {
+            slidesPerView: 2,  // 1 slide per view for screens up to 900px
+          },
+          1300: {
+            slidesPerView: 4, // 4 slides per view for screens larger than 1300px
+          },
+          // Add more breakpoints if needed
+        }}
+        modules={[Navigation]}
+        navigation={{ clickable: true }}
+        loop={true} 
+        >
+            {filterDivisions("Sales Orders") && (
+              <SwiperSlide>
+                <div className="card-container">
+                  <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} onClick={() => handleCardClick("/sales")} style={{ cursor: "pointer" }}>
+                      <ComplexStatisticsCard
+                        icon="description"
+                        title={<h3 style={{ fontSize: '24px' ,fontFamily: 'Poppins, sans-serif'}}>Sales Order</h3>}
+                        percentage={{
+                          amount: (
+                            <div style={{ fontFamily: 'Poppins, sans-serif'}}>
+                           <div style={{ paddingBottom: '1px' }}>
+                              Approval Pending: {42}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Dispatch Pending: {22}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Processing: {20}
+                            </div>
+                          </div>
+                          ), 
+                        }}
+                      />
+                    </MDBox>
+                  </Grid>
+                </div>
+              </SwiperSlide>
+            )} 
+             {filterDivisions("Dispatch Order") && (
+              <SwiperSlide>
+                <div className="card-container">
+                  <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} onClick={() => handleCardClick("/dispatch")} style={{ cursor: "pointer" }}>
+                      <ComplexStatisticsCard
+                        icon="delivery_dining"
+                        title={<h3 style={{ fontSize: '20px' ,fontFamily: 'Poppins, sans-serif'}}>Dispatch Order</h3>}
+                        percentage={{
+                          amount: (
+                            <div style={{ fontFamily: 'Poppins, sans-serif'}}>
+                           <div style={{ paddingBottom: '1px' }}>
+                              Approval Pending: {42}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Dispatch Pending: {22}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Processing: {20}
+                            </div>
+                          </div>
+                          ), 
+                        }}
+                      />
+                    </MDBox>
+                  </Grid>
+                </div>
+              </SwiperSlide>
+            )} 
+            {filterDivisions("Gate") && (
+              <SwiperSlide>
+                <div className="card-container">
+                  <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} onClick={() => handleCardClick("/gate")} style={{ cursor: "pointer" }}>
+                      <ComplexStatisticsCard
+                        icon={<EntranceIcon/>}
+                        title={<h3 style={{ fontSize: '24px' ,fontFamily: 'Poppins, sans-serif'}}>Gate</h3>}
+                        percentage={{
+                          amount: (
+                            <div style={{ fontFamily: 'Poppins, sans-serif'}}>
+                           <div style={{ paddingBottom: '1px' }}>
+                              Approval Pending: {42}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Dispatch Pending: {22}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Processing: {20}
+                            </div>
+                          </div>
+                          ), 
+                        }}
+                      />
+                    </MDBox>
+                  </Grid>
+                </div>
+              </SwiperSlide>
+            )} 
+            {filterDivisions("Weighment") && (
+              <SwiperSlide>
+                <div className="card-container">
+                  <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} onClick={() => handleCardClick("/weighment")} style={{ cursor: "pointer" }}>
+                      <ComplexStatisticsCard
+                         icon="scale"
+                        title={<h3 style={{ fontSize: '24px' ,fontFamily: 'Poppins, sans-serif'}}>Weighment</h3>}
+                        percentage={{
+                          amount: (
+                            <div style={{ fontFamily: 'Poppins, sans-serif'}}>
+                           <div style={{ paddingBottom: '1px' }}>
+                              Approval Pending: {42}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Dispatch Pending: {22}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Processing: {20}
+                            </div>
+                          </div>
+                          ), 
+                        }}
+                      />
+                    </MDBox>
+                  </Grid>
+                </div>
+              </SwiperSlide>
+            )} 
+             {filterDivisions("Billing") && (
+              <SwiperSlide>
+                <div className="card-container">
+                  <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} onClick={() => handleCardClick("/billing")} style={{ cursor: "pointer" }}>
+                      <ComplexStatisticsCard
+                        icon="receipt"
+                        title={<h3 style={{ fontSize: '24px' ,fontFamily: 'Poppins, sans-serif'}}>Billing</h3>}
+                        percentage={{
+                          amount: (
+                            <div style={{ fontFamily: 'Poppins, sans-serif'}}>
+                           <div style={{ paddingBottom: '1px' }}>
+                              Approval Pending: {42}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Dispatch Pending: {22}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Processing: {20}
+                            </div>
+                          </div>
+                          ), 
+                        }}
+                      />
+                    </MDBox>
+                  </Grid>
+                </div>
+              </SwiperSlide>
+            )} 
+             {filterDivisions("E-Invoiceing") && (
+              <SwiperSlide>
+                <div className="card-container">
+                  <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} onClick={() => handleCardClick("/invoice")} style={{ cursor: "pointer" }}>
+                      <ComplexStatisticsCard
+                        icon="event_note"
+                        title={<h3 style={{ fontSize: '24px' ,fontFamily: 'Poppins, sans-serif'}}>E-Invoiceing</h3>}
+                        percentage={{
+                          amount: (
+                            <div style={{ fontFamily: 'Poppins, sans-serif'}}>
+                           <div style={{ paddingBottom: '1px' }}>
+                              Approval Pending: {42}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Dispatch Pending: {22}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Processing: {20}
+                            </div>
+                          </div>
+                          ), 
+                        }}
+                      />
+                    </MDBox>
+                  </Grid>
+                </div>
+              </SwiperSlide>
+            )} 
+             {filterDivisions("Sales Order") && (
+              <SwiperSlide>
+                <div className="card-container">
+                  <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} onClick={() => handleCardClick("/sales")} style={{ cursor: "pointer" }}>
+                      <ComplexStatisticsCard
+                        icon="description"
+                        title={<h3 style={{ fontSize: '24px' ,fontFamily: 'Poppins, sans-serif'}}>Sales Order</h3>}
+                        percentage={{
+                          amount: (
+                            <div style={{ fontFamily: 'Poppins, sans-serif'}}>
+                           <div style={{ paddingBottom: '1px' }}>
+                              Approval Pending: {42}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Dispatch Pending: {22}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Processing: {20}
+                            </div>
+                          </div>
+                          ), 
+                        }}
+                      />
+                    </MDBox>
+                  </Grid>
+                </div>
+              </SwiperSlide>
+            )} 
+             {filterDivisions("Dispatch Order") && (
+              <SwiperSlide>
+                <div className="card-container">
+                  <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} onClick={() => handleCardClick("/dispatch")} style={{ cursor: "pointer" }}>
+                      <ComplexStatisticsCard
+                         icon="delivery_dining"
+                        title={<h3 style={{ fontSize: '20px' ,fontFamily: 'Poppins, sans-serif'}}>Dispatch Order</h3>}
+                        percentage={{
+                          amount: (
+                            <div style={{ fontFamily: 'Poppins, sans-serif'}}>
+                           <div style={{ paddingBottom: '1px' }}>
+                              Approval Pending: {42}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Dispatch Pending: {22}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Processing: {20}
+                            </div>
+                          </div>
+                          ), 
+                        }}
+                      />
+                    </MDBox>
+                  </Grid>
+                </div>
+              </SwiperSlide>
+            )} 
+          </Swiper>
+        </div>
         <MDBox mt={4.5}>
           <Grid container spacing={3}>
             {filterDivisions("website views") && (
