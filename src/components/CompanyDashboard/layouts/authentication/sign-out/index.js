@@ -9,7 +9,7 @@ const SignOut = () => {
     console.log("Signing out...");
 
     // Redirect to the login page
-    navigate('/src/components/CompanyLogin/CompanyLogin.jsx');
+    navigate('/CompanyLogin');
   }, [navigate]);
 
   return null;

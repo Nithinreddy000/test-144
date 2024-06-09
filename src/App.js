@@ -24,8 +24,8 @@ import themeDarkRTL from "./components/CompanyDashboard/assets/theme-dark/theme-
 import routes from "./components/CompanyDashboard/routes";
 import { MaterialUIControllerProvider, useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "./components/CompanyDashboard/context";
 
-import brandWhite from "./components/CompanyDashboard/assets/images/logo-ct.png";
-import brandDark from "./components/CompanyDashboard/assets/images/logo-ct-dark.png";
+import brandWhite from "../src/components/assets/favicon.ico";
+import brandDark from "../src/components/assets/favicon.ico";
 
 
 function DashboardContent() {
@@ -121,12 +121,12 @@ function DashboardContent() {
                 {layout === "dashboard" && (
                     <>
                         <Sidenav
-                            color={sidenavColor}
-                            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-                            brandName="Material Dashboard 2"
-                            routes={routes}
-                            onMouseEnter={handleOnMouseEnter}
-                            onMouseLeave={handleOnMouseLeave}
+                         color={sidenavColor}
+                         brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+                         brandName="Infinity X"
+                         routes={routes}
+                         onMouseEnter={handleOnMouseEnter}
+                         onMouseLeave={handleOnMouseLeave}
                         />
                         <Configurator />
                         {configsButton}
@@ -134,7 +134,7 @@ function DashboardContent() {
                 )}
                 {layout === "vr" && <Configurator />}
                 <Routes>
-                    <Route path="*" element={<CompanyDashboard />} />
+                    <Route path="/" element={<CompanyDashboard />} />
                     {getRoutes(routes)}
                     <Route path="*" element={<Navigate to="/dashboard" />} />
                 </Routes>
@@ -148,7 +148,11 @@ function DashboardContent() {
                     <Sidenav
                         color={sidenavColor}
                         brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-                        brandName="Material Dashboard 2"
+                        brandName={
+                            <span style={{ paddingLeft: '20px', fontSize: '20px' }}>
+                                Infinity X
+                            </span>
+                        }
                         routes={routes}
                         onMouseEnter={handleOnMouseEnter}
                         onMouseLeave={handleOnMouseLeave}
@@ -159,7 +163,7 @@ function DashboardContent() {
             )}
             {layout === "vr" && <Configurator />}
             <Routes>
-                <Route path="*" element={<CompanyDashboard />} />
+                <Route path="/" element={<CompanyDashboard />} />
                 {getRoutes(routes)}
                 <Route path="*" element={<Navigate to="/dashboard" />} />
             </Routes>

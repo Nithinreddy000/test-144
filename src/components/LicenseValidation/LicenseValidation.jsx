@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import TypeIt from 'typeit';
 import infinityX from '../assets/infinityX.png';
 import cp from '../assets/cp.png';
+import { infinity } from 'ldrs';
+
+infinity.register();
 
 const LicenseValidation = () => {
   const [Username, setUsername] = useState('');
@@ -59,7 +62,19 @@ const LicenseValidation = () => {
   };
 
   return (
-    <div className=" d-flex flex-column min-vh-100 bg-gray p-5 h-100">
+    <div className="d-flex flex-column min-vh-100 bg-gray p-5 h-100">
+      {loading && (
+        <div className="loader-overlay">
+          <l-infinity
+            size="55"
+            stroke="4"
+            stroke-length="0.15"
+            bg-opacity="0.1"
+            speed="1.3"
+            color="white"
+          ></l-infinity>
+        </div>
+      )}
       <div className="container">
         <div className="row pt-5">
           <div className="col-xl-7 col-lg-6 col-md-12">
@@ -123,6 +138,20 @@ const LicenseValidation = () => {
           </div>
         </div>
       </div>
+      <style jsx>{`
+        .loader-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: #092537;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 9999;
+        }
+      `}</style>
     </div>
   );
 };

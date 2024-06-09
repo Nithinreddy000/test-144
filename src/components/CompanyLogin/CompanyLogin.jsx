@@ -6,6 +6,9 @@ import '../css/bootstrap.min.css';
 import TypeIt from 'typeit';
 import infinityX from '../assets/infinityX.png';
 import client from '../assets/client.png';
+import { infinity } from 'ldrs';
+
+infinity.register();
 
 const CompanyLogin = () => {
   const [Username, setUsername] = useState('');
@@ -21,20 +24,20 @@ const CompanyLogin = () => {
     setCompanyPeriod(selectedCompany.companyPeriod || '01-Apr-2024 to 31-Mar-2025');
   }, []);
   
-    useEffect(() => {
-      const handle = requestAnimationFrame(() => {
-        const typeItInstance = new TypeIt(".text-description", {
-          strings: ["ERP on your Fingertips."],
-          speed: 50,
-          waitUntilVisible: true,
-        }).go();
-    
-        return () => {
-          typeItInstance.destroy();
-        };
-      });
-    
-      return () => cancelAnimationFrame(handle);
+  useEffect(() => {
+    const handle = requestAnimationFrame(() => {
+      const typeItInstance = new TypeIt(".text-description", {
+        strings: ["ERP on your Fingertips."],
+        speed: 50,
+        waitUntilVisible: true,
+      }).go();
+  
+      return () => {
+        typeItInstance.destroy();
+      };
+    });
+  
+    return () => cancelAnimationFrame(handle);
   }, []);
 
   const handleForgotPassword = () => {
@@ -56,7 +59,7 @@ const CompanyLogin = () => {
       // Save the token to localStorage
       localStorage.setItem('authToken2', response.data.token);
       // Redirect to the CompanyProfile page after successful login
-      navigate('/CompanyProfile');
+      navigate('/CompanyDashboard');
     } catch (error) {
       setError('Invalid email, password, or company code');
     }
@@ -65,7 +68,19 @@ const CompanyLogin = () => {
 
   return (
     <div className="bg-gray">
-      <div className=" h-100">
+      {loading && (
+        <div className="loader-overlay">
+          <l-infinity
+            size="55"
+            stroke="4"
+            stroke-length="0.15"
+            bg-opacity="0.1"
+            speed="1.3"
+            color="white"
+          ></l-infinity>
+        </div>
+      )}
+      <div className="h-100">
         <div className="container h-100">
           <div className="row pt-5 h-100">
             <div className="col-xl-7 col-lg-6 col-md-12">
@@ -144,6 +159,20 @@ const CompanyLogin = () => {
           </div>
         </div>
       </div>
+      <style jsx>{`
+        .loader-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: #092537;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 9999;
+        }
+      `}</style>
     </div>
   );
 }
