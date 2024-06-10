@@ -77,7 +77,7 @@ ComplexStatisticsCard.defaultProps = {
     text: "",
     label: "",
   },
-  details: "No additional details available.",
+  details: "",
 };
 
 // Typechecking props for the ComplexStatisticsCard

@@ -1,19 +1,51 @@
-import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState, useRef ,useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import "../dashboard/dashboardstyles.css"; // Import the custom CSS here
 import MDBox from "../../components/MDBox";
 import DashboardLayout from "../../examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "../../examples/Navbars/DashboardNavbar";
 import Footer from "../../examples/Footer";
-import MDTypography from "../../components/MDTypography";
 import ComplexStatisticsCard from "../../examples/Cards/StatisticsCards/ComplexStatisticsCard";
+import ReportsBarChart from "../../examples/Charts/BarCharts/ReportsBarChart";
+import ReportsLineChart from "../../examples/Charts/LineCharts/ReportsLineChart";
+import reportsBarChartData from "../../layouts/dashboard/data/reportsBarChartData";
+import reportsLineChartData from "../../layouts/dashboard/data/reportsLineChartData";
+import Projects from "../../layouts/dashboard/components/Projects";
+import OrdersOverview from "../../layouts/dashboard/components/OrdersOverview";
+import EntranceIcon from '@mui/icons-material/ExitToApp';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
+import Orders from "../dashboard/orders";
+import { Link as ScrollLink } from 'react-scroll';
 
-function Sales() {
-  const location = useLocation();
-  const { orderCount } = location.state || { orderCount: 0 };
-  const colors = ["success", "dark", "info"];
+
+function Dashboard() {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const [showProjectsAndOrders, setShowProjectsAndOrders] = useState(false);
+  const [clickTimeout, setClickTimeout] = useState(null);
+  
+  const handleCardClick = () => {
+    // Toggle the state between true and false
+    console.log("Card clicked"); // Add this line for debugging
+    setShowProjectsAndOrders(prevState => !prevState);
+  };
+  
+  
 
+  useEffect(() => {
+    // Scroll to the projects and orders overview when showProjectsAndOrders changes
+    if (showProjectsAndOrders) {
+      window.scrollTo({
+        top: document.getElementById('projectsAndOrdersOverview').offsetTop,
+        behavior: 'smooth'
+      });
+    }
+  }, [showProjectsAndOrders]);
   const handleSearch = (query) => {
     // Debounce the state update with a delay of 300 milliseconds
     setTimeout(() => {
@@ -21,78 +53,316 @@ function Sales() {
     }, 300);
   };
 
-  const filterOrder = (orderIndex) => {
-    const orderDetails = [
-      `ORDER ${orderIndex + 1}`,
-      `Order ID: ${11223 + orderIndex}`,
-      `Customer Name: Customer ${orderIndex + 1}`,
-      `Order Date: 2024-06-${String(orderIndex + 1).padStart(2, "0")}`,
-      `Items Ordered: Product ${String.fromCharCode(65 + (orderIndex % 26))}`,
-      `Total Amount: $${100 + orderIndex}`,
-      `Payment Status: ${orderIndex % 2 === 0 ? "Paid" : "Pending"}`,
-      `Shipping Address: ${1234 + orderIndex} Elm St, Springfield, IL`,
-      `Expected Delivery: 2024-06-${String(orderIndex + 7).padStart(2, "0")}`,
-    ];
-
-    return orderDetails.some((detail) => detail.toLowerCase().includes(searchQuery));
+  const filterDivisions = (content) => {
+    return content.toLowerCase().includes(searchQuery);
   };
+
+
+  
 
   return (
     <DashboardLayout>
       <DashboardNavbar onSearch={handleSearch} />
-      <MDBox py={3}>
-        <Grid container spacing={3}>
-          {Array.from({ length: orderCount }, (_, index) =>
-            filterOrder(index) ? (
-              <Grid item xs={12} md={6} lg={3} key={index}>
-                <MDBox mb={1.5}>
-                  <ComplexStatisticsCard
-                    color={colors[index % colors.length]} // Alternate colors
-                    icon="shopping_cart"
-                    title={`ORDER ${index + 1}`}
-                    percentage={{
-                      color: "success",
-                      amount: "+55%",
-                      label: "than last week",
-                    }}
-                    details={
-                      <>
-                        <MDTypography variant="body2" color="textSecondary">
-                          <strong>Order ID:</strong> {11223 + index}
-                        </MDTypography>
-                        <MDTypography variant="body2" color="textSecondary">
-                          <strong>Customer Name:</strong> Customer {index + 1}
-                        </MDTypography>
-                        <MDTypography variant="body2" color="textSecondary">
-                          <strong>Order Date:</strong> 2024-06-{String(index + 1).padStart(2, "0")}
-                        </MDTypography>
-                        <MDTypography variant="body2" color="textSecondary">
-                          <strong>Items Ordered:</strong> Product {String.fromCharCode(65 + (index % 26))}
-                        </MDTypography>
-                        <MDTypography variant="body2" color="textSecondary">
-                          <strong>Total Amount:</strong> ${100 + index}
-                        </MDTypography>
-                        <MDTypography variant="body2" color="textSecondary">
-                          <strong>Payment Status:</strong> {index % 2 === 0 ? "Paid" : "Pending"}
-                        </MDTypography>
-                        <MDTypography variant="body2" color="textSecondary">
-                          <strong>Shipping Address:</strong> {1234 + index} Elm St, Springfield, IL
-                        </MDTypography>
-                        <MDTypography variant="body2" color="textSecondary">
-                          <strong>Expected Delivery:</strong> 2024-06-{String(index + 7).padStart(2, "0")}
-                        </MDTypography>
-                      </>
-                    }
-                  />
-                </MDBox>
-              </Grid>
-            ) : null
-          )}
-        </Grid>
+      <MDBox py={3} >
+        <h3 style={{paddingLeft: '10px',fontFamily: 'Poppins, sans-serif',paddingTop:'0%' ,marginTop:'0%'}}>INWARD</h3>
+        <div className="swiper-container">
+        <Swiper
+        spaceBetween={16}
+        slidesPerView={4} // Default number of slides per view
+        breakpoints={{
+          0: {
+            slidesPerView: 1, // 1 slide per view for screens from 0 to 900px
+          },
+          768: {
+            slidesPerView: 2,  // 1 slide per view for screens up to 900px
+          },
+          1300: {
+            slidesPerView: 4, // 4 slides per view for screens larger than 1300px
+          },
+          // Add more breakpoints if needed
+        }}
+      
+        modules={[Navigation]}
+        navigation={{ clickable: true }}
+        loop={true} 
+        >
+
+            {filterDivisions("Tmt Bars") && (
+              <SwiperSlide>
+                <div className="card-container">
+                  <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} onClick={handleCardClick} style={{ cursor: "pointer" }}>
+                      <ComplexStatisticsCard
+                        icon="bar_chart"
+                        title={<h3 style={{ fontSize: '24px' ,fontFamily: 'Poppins, sans-serif'}}>Tmt Bars</h3>}
+                        percentage={{
+                          amount: (
+                            <div style={{ fontFamily: 'Poppins, sans-serif'}}>
+                           <div style={{ paddingBottom: '1px' }}>
+                              Approval Pending: {42}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Dispatch Pending: {22}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Processing: {20}
+                            </div>
+                            <br />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1px' ,fontSize:'12px'}}>
+                    <div style={{ textAlign: 'left', flex: 1 }}>
+                      <div>Quantity&nbsp;&nbsp;</div>
+                      <div>400</div>
+                    </div>
+                    <div style={{ textAlign: 'center', flex: 1 }}>
+                      <div>Dispatch&nbsp;&nbsp;</div>
+                      <div>20%</div>
+                    </div>
+                    <div style={{ textAlign: 'center', flex: 1 }}>
+                      <div>Balance&nbsp;&nbsp;</div>
+                      <div>24000</div>
+                    </div>
+                    <div style={{ textAlign: 'right', flex: 1 }}>
+                      <div>AvgRate</div>
+                      <div>4000</div>
+                    </div>
+                  </div>
+                          </div>
+                          ), 
+                        }}
+                      />
+                    </MDBox>
+                  </Grid>
+                </div>
+              </SwiperSlide>
+            )}
+            {filterDivisions("Billets") && (
+              <SwiperSlide>
+                <div className="card-container">
+                  <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} onClick={handleCardClick} style={{ cursor: "pointer" }}>
+                      <ComplexStatisticsCard
+                        icon="layers"
+                        title={<h3 style={{ fontSize: '24px', fontFamily: 'Poppins, sans-serif' }}>Billets</h3>}
+                        percentage={{
+                          amount: (
+                            <div style={{ fontFamily: 'Poppins, sans-serif'}}>
+                           <div style={{ paddingBottom: '1px' }}>
+                              Approval Pending: {42}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Dispatch Pending: {22}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Processing: {20}
+                            </div>
+                            <br />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1px' ,fontSize:'12px'}}>
+                    <div style={{ textAlign: 'left', flex: 1 }}>
+                      <div>Quantity&nbsp;&nbsp;</div>
+                      <div>400</div>
+                    </div>
+                    <div style={{ textAlign: 'center', flex: 1 }}>
+                      <div>Dispatch&nbsp;&nbsp;</div>
+                      <div>20%</div>
+                    </div>
+                    <div style={{ textAlign: 'center', flex: 1 }}>
+                      <div>Balance&nbsp;&nbsp;</div>
+                      <div>24000</div>
+                    </div>
+                    <div style={{ textAlign: 'right', flex: 1 }}>
+                      <div>AvgRate</div>
+                      <div>4000</div>
+                    </div>
+                  </div>
+                          </div>
+                          ), 
+                        }}
+                      />
+                    </MDBox>
+                  </Grid>
+                </div>
+              </SwiperSlide>
+            )}
+            {filterDivisions("Sponze Mix") && (
+              <SwiperSlide>
+                <div className="card-container">
+                  <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} onClick={handleCardClick} style={{ cursor: "pointer" }}>
+                      <ComplexStatisticsCard
+                       icon='blur_on'
+                        title={<h3 style={{ fontSize: '24px', fontFamily: 'Poppins, sans-serif' }}>Sponze Mix</h3>}
+                        percentage={{
+                          amount: (
+                            <div style={{ fontFamily: 'Poppins, sans-serif'}}>
+                           <div style={{ paddingBottom: '1px' }}>
+                              Approval Pending: {42}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Dispatch Pending: {22}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Processing: {20}
+                            </div>
+                            <br />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1px' ,fontSize:'12px'}}>
+                    <div style={{ textAlign: 'left', flex: 1 }}>
+                      <div>Quantity&nbsp;&nbsp;</div>
+                      <div>400</div>
+                    </div>
+                    <div style={{ textAlign: 'center', flex: 1 }}>
+                      <div>Dispatch&nbsp;&nbsp;</div>
+                      <div>20%</div>
+                    </div>
+                    <div style={{ textAlign: 'center', flex: 1 }}>
+                      <div>Balance&nbsp;&nbsp;</div>
+                      <div>24000</div>
+                    </div>
+                    <div style={{ textAlign: 'right', flex: 1 }}>
+                      <div>AvgRate</div>
+                      <div>4000</div>
+                    </div>
+                  </div>
+                          </div>
+                          ), 
+                        }}
+                      />
+                    </MDBox>
+                  </Grid>
+                </div>
+              </SwiperSlide>
+            )}
+            {filterDivisions("Iron") && (
+              <SwiperSlide>
+                <div className="card-container">
+                  <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} onClick={handleCardClick} style={{ cursor: "pointer" }}>
+                      <ComplexStatisticsCard
+                        icon="horizontal_split"
+                        title={<h3 style={{ fontSize: '24px', fontFamily: 'Poppins, sans-serif' }}>Iron</h3>}
+                        percentage={{
+                          amount: (
+                            <div style={{ fontFamily: 'Poppins, sans-serif'}}>
+                           <div style={{ paddingBottom: '1px' }}>
+                              Approval Pending: {42}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Dispatch Pending: {22}
+                            </div>
+                            <br />
+                            <div style={{ paddingBottom: '1px' }}>
+                              Processing: {20}
+                            </div>
+                            <br />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1px' ,fontSize:'12px'}}>
+                    <div style={{ textAlign: 'left', flex: 1 }}>
+                      <div>Quantity&nbsp;&nbsp;</div>
+                      <div>400</div>
+                    </div>
+                    <div style={{ textAlign: 'center', flex: 1 }}>
+                      <div>Dispatch&nbsp;&nbsp;</div>
+                      <div>20%</div>
+                    </div>
+                    <div style={{ textAlign: 'center', flex: 1 }}>
+                      <div>Balance&nbsp;&nbsp;</div>
+                      <div>24000</div>
+                    </div>
+                    <div style={{ textAlign: 'right', flex: 1 }}>
+                      <div>AvgRate</div>
+                      <div>4000</div>
+                    </div>
+                  </div>
+                          </div>
+                          ), 
+                        }}
+                      />
+                    </MDBox>
+                  </Grid>
+                </div>
+              </SwiperSlide>
+            )}
+           {filterDivisions("Coal") && (
+  <SwiperSlide>
+    <div className="card-container">
+      <Grid item xs={12} md={6} lg={3}>
+        <MDBox mb={1.5} onClick={handleCardClick} style={{ cursor: "pointer" }}>
+          <ComplexStatisticsCard
+            icon="whatshot"
+            title={<h3 style={{ fontSize: '24px', fontFamily: 'Poppins, sans-serif' }}>Coal</h3>}
+            percentage={{
+              amount: (
+                <div style={{ fontFamily: 'Poppins, sans-serif' }}>
+                  <div style={{ paddingBottom: '1px' }}>
+                    Approval Pending: {42}
+                  </div>
+                  <br />
+                  <div style={{ paddingBottom: '1px' }}>
+                    Dispatch Pending: {22}
+                  </div>
+                  <br />
+                  <div style={{ paddingBottom: '1px' }}>
+                    Processing: {20}
+                  </div>
+                  <br />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1px' ,fontSize:'12px'}}>
+                    <div style={{ textAlign: 'left', flex: 1 }}>
+                      <div>Quantity&nbsp;&nbsp;</div>
+                      <div>400</div>
+                    </div>
+                    <div style={{ textAlign: 'center', flex: 1 }}>
+                      <div>Dispatch&nbsp;&nbsp;</div>
+                      <div>20%</div>
+                    </div>
+                    <div style={{ textAlign: 'center', flex: 1 }}>
+                      <div>Balance&nbsp;&nbsp;</div>
+                      <div>24000</div>
+                    </div>
+                    <div style={{ textAlign: 'right', flex: 1 }}>
+                      <div>AvgRate</div>
+                      <div>4000</div>
+                    </div>
+                  </div>
+                </div>
+              ),
+            }}
+          />
+        </MDBox>
+      </Grid>
+    </div>
+  </SwiperSlide>
+)}
+
+            </Swiper>
+        </div>
+        <MDBox mt={4.5}>
+          <Grid container spacing={3}>
+          </Grid>
+        </MDBox>
+        <MDBox mt={4.5}>
+<Grid container spacing={3} id="projectsAndOrdersOverview">
+      {/* Render Projects and OrdersOverview based on state */}
+      {showProjectsAndOrders && (
+      <>
+      <Grid item xs={12} md={6} lg={8}>
+      <Projects />
+      </Grid>
+      <Grid item xs={12} md={6} lg={4}>
+      <OrdersOverview />
+      </Grid>
+      </>
+      )}
+      </Grid>
+</MDBox>
       </MDBox>
       <Footer />
     </DashboardLayout>
   );
 }
 
-export default Sales;
+export default Dashboard;
