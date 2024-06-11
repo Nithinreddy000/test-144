@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 // @mui material components
@@ -11,14 +11,8 @@ import MDBox from "../../../../components/MDBox";
 import MDTypography from "../../../../components/MDTypography";
 
 function ComplexStatisticsCard({ color, title, count, percentage, icon, details }) {
-  const [expanded, setExpanded] = useState(false);
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
-
   return (
-    <Card onClick={handleExpandClick} sx={{ cursor: "pointer" }}>
+    <Card sx={{ cursor: "pointer" }}>
       <MDBox display="flex" justifyContent="space-between" pt={1} px={2}>
         <MDBox
           variant="gradient"
@@ -57,13 +51,11 @@ function ComplexStatisticsCard({ color, title, count, percentage, icon, details 
           </MDTypography>
           &nbsp;{percentage.label}
         </MDTypography>
-        {expanded && (
-          <MDBox mt={2}>
-            <MDTypography variant="body2" color="textSecondary">
-              {details}
-            </MDTypography>
-          </MDBox>
-        )}
+        <MDBox mt={2}>
+          <MDTypography variant="body2" color="textSecondary">
+            {details}
+          </MDTypography>
+        </MDBox>
       </MDBox>
     </Card>
   );
@@ -74,7 +66,7 @@ ComplexStatisticsCard.defaultProps = {
   color: "info",
   percentage: {
     color: "success",
-    text: "",
+    amount: "",
     label: "",
   },
   details: "",

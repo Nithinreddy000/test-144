@@ -30,20 +30,25 @@ function Dashboard() {
   const [clickTimeout, setClickTimeout] = useState(null);
   
   const handleCardClick = () => {
-    // Toggle the state between true and false
-    console.log("Card clicked"); // Add this line for debugging
-    setShowProjectsAndOrders(prevState => !prevState);
+    setShowProjectsAndOrders(true); // Ensure Projects and OrdersOverview are shown
+    scrollToProjectsAndOrders(); // Scroll to the Projects and OrdersOverview section
   };
   
   
 
-  useEffect(() => {
-    // Scroll to the projects and orders overview when showProjectsAndOrders changes
-    if (showProjectsAndOrders) {
+  const scrollToProjectsAndOrders = () => {
+    const section = document.getElementById('projectsAndOrdersOverview');
+    if (section) {
       window.scrollTo({
-        top: document.getElementById('projectsAndOrdersOverview').offsetTop,
+        top: section.offsetTop,
         behavior: 'smooth'
       });
+    }
+  };
+
+  useEffect(() => {
+    if (showProjectsAndOrders) {
+      scrollToProjectsAndOrders();
     }
   }, [showProjectsAndOrders]);
   const handleSearch = (query) => {

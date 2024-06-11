@@ -1,24 +1,5 @@
-/**
-=========================================================
-* Material Dashboard 2  React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useMemo } from "react";
-
-// porp-types is a library for typechecking of props
 import PropTypes from "prop-types";
-
-// react-chartjs-2 components
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -31,18 +12,10 @@ import {
   Legend,
   Filler,
 } from "chart.js";
-
-// @mui material components
 import Card from "@mui/material/Card";
-import Divider from "@mui/material/Divider";
-import Icon from "@mui/material/Icon";
-
-// Material Dashboard 2 React components
 import MDBox from "../../../../components/MDBox";
-import MDTypography from "../../../../components/MDTypography";
-
-// ReportsLineChart configurations
 import configs from "../../../../examples/Charts/LineCharts/ReportsLineChart/configs";
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 ChartJS.register(
   CategoryScale,
@@ -57,36 +30,43 @@ ChartJS.register(
 
 function ReportsLineChart({ color, title, description, date, chart }) {
   const { data, options } = configs(chart.labels || [], chart.datasets || {});
+  
+  const isLargeScreen = useMediaQuery('(min-width:1024px) and (min-height:1366px)');
+  const chartHeight = isLargeScreen ? "25rem" : "20rem"; // Adjust heights as needed
 
   return (
-    <Card sx={{ height: "100%",padding:"1rem" }}>
-        {useMemo(
-          () => (
-            <MDBox
-              variant="gradient"
-              bgColor={color}
-              borderRadius="lg"
-              py={2}
-              pr={0.5}
-              mt={-5}
-              height="20rem"
-            >
-              <Line data={data} options={options} redraw />
-            </MDBox>
-          ),
-          [chart, color]
-        )}
+    <Card sx={{
+      padding: "1rem",
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height:'45vh'
+    }}>
+      {useMemo(
+        () => (
+          <MDBox
+            variant="gradient"
+            bgColor={color}
+            borderRadius="lg"
+            py={2}
+            pr={0.5}
+            mt={-5}
+            sx={{ height: chartHeight, width: isLargeScreen ? '100%' : '100%' }} // Adjust width if necessary
+          >
+            <Line data={data} options={options} redraw />
+          </MDBox>
+        ),
+        [chart, color, chartHeight, isLargeScreen]
+      )}
     </Card>
   );
 }
 
-// Setting default values for the props of ReportsLineChart
 ReportsLineChart.defaultProps = {
   color: "info",
   description: "",
 };
 
-// Typechecking props for the ReportsLineChart
 ReportsLineChart.propTypes = {
   color: PropTypes.oneOf(["primary", "secondary", "info", "success", "warning", "error", "dark"]),
   title: PropTypes.string.isRequired,
