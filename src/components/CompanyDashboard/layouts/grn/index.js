@@ -13,17 +13,16 @@ import Footer from "../../examples/Footer";
 import ComplexStatisticsCard from "../../examples/Cards/StatisticsCards/ComplexStatisticsCard";
 import ReportsBarChart from "../../examples/Charts/BarCharts/ReportsBarChart";
 import ReportsLineChart from "../../examples/Charts/LineCharts/ReportsLineChart";
-import reportsBarChartData from "../../layouts/dashboard/data/reportsBarChartData";
-import reportsLineChartData from "../../layouts/dashboard/data/reportsLineChartData";
-import Projects from "../../layouts/dashboard/components/Projects";
-import OrdersOverview from "../../layouts/dashboard/components/OrdersOverview";
+import reportsBarChartData from "../dashboard/data/reportsBarChartData";
+import reportsLineChartData from "../dashboard/data/reportsLineChartData";
+import Projects from "../dashboard/components/Projects";
+import OrdersOverview from "../dashboard/components/OrdersOverview";
 import EntranceIcon from '@mui/icons-material/ExitToApp';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
-import Orders from "../orders";
 import { Link as ScrollLink } from 'react-scroll';
 
 
-function Dashboard() {
+function Grn() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [showProjectsAndOrders, setShowProjectsAndOrders] = useState(false);
@@ -34,6 +33,8 @@ function Dashboard() {
     scrollToProjectsAndOrders(); // Scroll to the Projects and OrdersOverview section
   };
   
+  
+
   const scrollToProjectsAndOrders = () => {
     const section = document.getElementById('projectsAndOrdersOverview');
     if (section) {
@@ -368,4 +369,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default Grn;

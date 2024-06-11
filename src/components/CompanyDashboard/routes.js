@@ -3,23 +3,23 @@ import Profile from "./layouts/profile";
 import Notifications from "./layouts/notifications";
 import SignOut from "./layouts/authentication/sign-out";
 import Sales from "./layouts/Sales";
-import Orders from "./layouts/dashboard/orders";
-import Inward_Orders from "./layouts/dashboard/inward_order";
-import Gate from "./layouts/dashboard/gate";
+import Orders from "./layouts/orders";
+import Inward_Orders from "./layouts/inward_orders";
+import Gate from "./layouts/gate";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
-import Weighment from "./layouts/dashboard/weighment";
-import Grn from "./layouts/dashboard/grn";
-import Purchase from "./layouts/dashboard/purchase";
-import Transporting from "./layouts/dashboard/transporting";
+import Weighment from "./layouts/weighment";
+import Grn from "./layouts/grn";
+import Purchase from "./layouts/purchase";
+import Transporting from "./layouts/transporting";
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 
 // @mui icons
 import Icon from "@mui/material/Icon";
-import Pending from "./layouts/dashboard/pending";
-import Dispatch from "./layouts/dashboard/dispatch";
-import Billing from "./layouts/dashboard/billing";
-import Invoice from "./layouts/dashboard/invoice";
+import Pending from "./layouts/pending";
+import Dispatch from "./layouts/dispatch";
+import Billing from "./layouts/billing2";
+import Invoice from "./layouts/invoice";
 
 const routes = [
   {
@@ -51,15 +51,15 @@ const routes = [
     name: "Orders",
     key: "orders",
     icon: <Icon fontSize="small">shopping_cart</Icon>,
-    route: "/dashboard/orders",
+    route: "/orders",
     component: <Orders />,
   },
   {
     type: "collapse",
     name: "Inward Orders",
-    key: "inward_order",
+    key: "inward_orders",
     icon: <Icon fontSize="small">inventory</Icon>,
-    route: "/dashboard/inward_order",
+    route: "/inward_orders",
     component: <Inward_Orders />,
   },
   {
@@ -67,15 +67,15 @@ const routes = [
     name: "Gate",
     key: "gate",
     icon: <FontAwesomeIcon icon={faSignInAlt} />,
-    route: "/dashboard/gate",
+    route: "/gate",
     component: <Gate />,
   },  
   {
     type: "collapse",
     name: "Weighment",
-    key: "Weighment",
+    key: "weighment",
     icon: <Icon fontSize="small">scale</Icon>,
-    route: "/dashboard/weighment",
+    route: "/weighment",
     component: <Weighment />,
   },
   {
@@ -83,7 +83,7 @@ const routes = [
     name: "GRN",
     key: "grn",
     icon: <Icon fontSize="small">assignment</Icon>,
-    route: "/dashboard/grn",
+    route: "/grn",
     component: <Grn />,
   },
   {
@@ -91,7 +91,7 @@ const routes = [
     name: "Purchase",
     key: "purchase",
     icon: <Icon fontSize="small">shoppingbasket</Icon>,
-    route: "/dashboard/purchase",
+    route: "/purchase",
     component: <Purchase />,
   },
   {
@@ -99,7 +99,7 @@ const routes = [
     name: "Transporting",
     key: "transporting",
     icon: <Icon fontSize="small">local_shipping</Icon>,
-    route: "/dashboard/transporting",
+    route: "/transporting",
     component: <Transporting />,
   },
   {
@@ -107,7 +107,7 @@ const routes = [
     name: "Pending Vehicles",
     key: "pending",
     icon: <HourglassEmptyIcon icon={faSignInAlt} />, 
-    route: "/dashboard/pending",
+    route: "/pending",
     component: <Pending />,
   },
   {
@@ -115,15 +115,15 @@ const routes = [
     name: "Dispatch",
     key: "dispatch",
     icon: <Icon fontSize="small">delivery_dining</Icon>,
-    route: "/dashboard/dispatch",
+    route: "/dispatch",
     component: <Dispatch />,
   },
   {
     type: "collapse",
     name: "Billing",
-    key: "billing",
+    key: "billing2",
     icon: <Icon fontSize="small">receipt</Icon>,
-    route: "/dashboard/billing",
+    route: "/billing2",
     component: <Billing />,
   },
   {
@@ -131,7 +131,7 @@ const routes = [
     name: "Invoice",
     key: "invoice",
     icon: <Icon fontSize="small">event_note</Icon>,
-    route: "/dashboard/invoice",
+    route: "/invoice",
     component: <Invoice />,
   },
   {

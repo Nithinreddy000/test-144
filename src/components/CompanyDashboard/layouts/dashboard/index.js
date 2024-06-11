@@ -19,13 +19,15 @@ import Projects from "../../layouts/dashboard/components/Projects";
 import OrdersOverview from "../../layouts/dashboard/components/OrdersOverview";
 import EntranceIcon from '@mui/icons-material/ExitToApp';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
-import Orders from "./orders";
+import { scrollToRoute } from "../../examples/Sidenav"; 
 
 function Dashboard() {
   const navigate = useNavigate();
   const { sales, tasks } = reportsLineChartData;
   const [searchQuery, setSearchQuery] = useState("");
   const swiperRef = useRef(null);
+  const billingRef = useRef(null);
+  const invoiceRef = useRef(null);
 
 
 
@@ -45,6 +47,10 @@ function Dashboard() {
     // Navigate to the specified route
     navigate(route);
   };
+  
+  // Then use this function like this:
+  
+
   
 
   return (
@@ -109,7 +115,7 @@ function Dashboard() {
               <SwiperSlide>
                 <div className="card-container">
                   <Grid item xs={12} md={6} lg={3}>
-                  <MDBox mb={1.5} onClick={() => handleCardClick("/inward_order")} style={{ cursor: "pointer" }}>
+                  <MDBox mb={1.5} onClick={() => handleCardClick("/inward_orders")} style={{ cursor: "pointer" }}>
                       <ComplexStatisticsCard
                         icon="inventory"
                         title={<h3 style={{ fontSize: '24px', fontFamily: 'Poppins, sans-serif' }}>Inward Order</h3>}
@@ -469,68 +475,69 @@ function Dashboard() {
                 </div>
               </SwiperSlide>
             )} 
-             {filterDivisions("Billing") && (
-              <SwiperSlide>
-                <div className="card-container">
-                  <Grid item xs={12} md={6} lg={3}>
-                  <MDBox mb={1.5} onClick={() => handleCardClick("/billing")} style={{ cursor: "pointer" }}>
-                      <ComplexStatisticsCard
-                        icon="receipt"
-                        title={<h3 style={{ fontSize: '24px' ,fontFamily: 'Poppins, sans-serif'}}>Billing</h3>}
-                        percentage={{
-                          amount: (
-                            <div style={{ fontFamily: 'Poppins, sans-serif'}}>
-                           <div style={{ paddingBottom: '1px' }}>
-                              Approval Pending: {42}
-                            </div>
-                            <br />
-                            <div style={{ paddingBottom: '1px' }}>
-                              Dispatch Pending: {22}
-                            </div>
-                            <br />
-                            <div style={{ paddingBottom: '1px' }}>
-                              Processing: {20}
-                            </div>
-                          </div>
-                          ), 
-                        }}
-                      />
-                    </MDBox>
-                  </Grid>
+           {filterDivisions("Billing") && (
+  <SwiperSlide>
+    <div className="card-container">
+      <Grid item xs={12} md={6} lg={3}>
+      <MDBox mb={1.5} onClick={() => handleCardClick("/billing2")} style={{ cursor: "pointer" }}>          
+        <ComplexStatisticsCard
+            icon="receipt"
+            title={<h3 style={{ fontSize: '24px', fontFamily: 'Poppins, sans-serif' }}>Billing</h3>}
+            percentage={{
+              amount: (
+                <div style={{ fontFamily: 'Poppins, sans-serif' }}>
+                  <div style={{ paddingBottom: '1px' }}>
+                    Approval Pending: 42
+                  </div>
+                  <br />
+                  <div style={{ paddingBottom: '1px' }}>
+                    Dispatch Pending: 22
+                  </div>
+                  <br />
+                  <div style={{ paddingBottom: '1px' }}>
+                    Processing: 20
+                  </div>
                 </div>
-              </SwiperSlide>
-            )} 
-             {filterDivisions("E-Invoiceing") && (
-              <SwiperSlide>
-                <div className="card-container">
-                  <Grid item xs={12} md={6} lg={3}>
-                  <MDBox mb={1.5} onClick={() => handleCardClick("/invoice")} style={{ cursor: "pointer" }}>
-                      <ComplexStatisticsCard
-                        icon="event_note"
-                        title={<h3 style={{ fontSize: '24px' ,fontFamily: 'Poppins, sans-serif'}}>E-Invoiceing</h3>}
-                        percentage={{
-                          amount: (
-                            <div style={{ fontFamily: 'Poppins, sans-serif'}}>
-                           <div style={{ paddingBottom: '1px' }}>
-                              Approval Pending: {42}
-                            </div>
-                            <br />
-                            <div style={{ paddingBottom: '1px' }}>
-                              Dispatch Pending: {22}
-                            </div>
-                            <br />
-                            <div style={{ paddingBottom: '1px' }}>
-                              Processing: {20}
-                            </div>
-                          </div>
-                          ), 
-                        }}
-                      />
-                    </MDBox>
-                  </Grid>
+              ),
+            }}
+          />
+        </MDBox>
+      </Grid>
+    </div>
+  </SwiperSlide>
+)}
+
+{filterDivisions("E-Invoiceing") && (
+  <SwiperSlide>
+    <div className="card-container">
+      <Grid item xs={12} md={6} lg={3}>
+      <MDBox mb={1.5} onClick={() => handleCardClick("/invoice")} style={{ cursor: "pointer" }}>          
+          <ComplexStatisticsCard
+            icon="event_note"
+            title={<h3 style={{ fontSize: '24px', fontFamily: 'Poppins, sans-serif' }}>E-Invoiceing</h3>}
+            percentage={{
+              amount: (
+                <div style={{ fontFamily: 'Poppins, sans-serif' }}>
+                  <div style={{ paddingBottom: '1px' }}>
+                    Approval Pending: 42
+                  </div>
+                  <br />
+                  <div style={{ paddingBottom: '1px' }}>
+                    Dispatch Pending: 22
+                  </div>
+                  <br />
+                  <div style={{ paddingBottom: '1px' }}>
+                    Processing: 20
+                  </div>
                 </div>
-              </SwiperSlide>
-            )} 
+              ),
+            }}
+          />
+        </MDBox>
+      </Grid>
+    </div>
+  </SwiperSlide>
+)} 
              {filterDivisions("Sales Order") && (
               <SwiperSlide>
                 <div className="card-container">
