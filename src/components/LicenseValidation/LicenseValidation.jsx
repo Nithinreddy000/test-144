@@ -12,8 +12,8 @@ const LicenseValidation = () => {
   const [Username, setUsername] = useState('');
   const [Password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-
+  const [loading, setLoading] = useState(true); // Initial loading state set to true
+  const [formLoading, setFormLoading] = useState(false); // Separate state for form submission loading
   useEffect(() => {
     const handle = requestAnimationFrame(() => {
       const typeItInstance = new TypeIt('.text-description', {
@@ -26,7 +26,9 @@ const LicenseValidation = () => {
         typeItInstance.destroy();
       };
     });
-
+    const initialLoadTimeout = setTimeout(() => {
+      setLoading(false);
+    }, 2000); // 5 seconds delay
     return () => cancelAnimationFrame(handle);
   }, []);
 
@@ -63,7 +65,7 @@ const LicenseValidation = () => {
 
   return (
     <div className="d-flex flex-column min-vh-100 bg-gray p-5 h-100">
-      {loading && (
+     {(loading || formLoading) && (
         <div className="loader-overlay">
           <l-infinity
             size="55"
